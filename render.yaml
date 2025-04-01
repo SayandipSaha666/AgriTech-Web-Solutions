@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: myflaskapp
+    env: docker
+    repo: https://github.com/SayandipSaha666/AgriTech-Web-Solutions
+    plan: free
+    region: oregon  # Change based on your location
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: PORT
+        value: 8080
