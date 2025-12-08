@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
 import gdown
-
+from dotenv import load_dotenv
 from routes.crop_recommendation import crop_recommendation_bp
 from routes.crop_disease import crop_disease_bp
 from routes.fertilizer import fertilizer_bp
 from routes.weather import weather_bp
+load_dotenv()
+
 
 app = Flask(__name__, template_folder='templates')
 
@@ -18,7 +20,7 @@ app.register_blueprint(weather_bp)
 
 # Google Drive model file ID
 
-GDRIVE_FILE_ID = "1pdAj8hDyHSPA3IdBJ9aila6aizlSrpiv"
+file_id = os.getenv("GDRIVE_FILE_ID")
 MODEL_PATH = "./models/crop_disease_model.tflite"
 
 # Ensure models directory exists
@@ -28,7 +30,7 @@ os.makedirs("models", exist_ok=True)
 def download_model():
     if not os.path.exists(MODEL_PATH):  # Check if model already exists
         print("Downloading model from Google Drive...")
-        url = f"https://drive.google.com/uc?id={GDRIVE_FILE_ID}"
+        url = f"https://drive.google.com/uc?id={file_id}"
         gdown.download(url, MODEL_PATH, quiet=False)
         print("Download complete.")
 
@@ -78,5 +80,6 @@ def feature4():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
